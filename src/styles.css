@@ -539,17 +539,8 @@ body::before {
   display: flex;
   gap: 10px;
   width: max-content;
-  animation: carousel-scroll 24s linear infinite;
+  transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform;
-}
-
-.gallery-carousel-track-reverse {
-  animation-name: carousel-scroll-reverse;
-  animation-duration: 28s;
-}
-
-.gallery-carousel:focus-within .gallery-carousel-track {
-  animation-play-state: paused;
 }
 
 .gallery-carousel-slide {
@@ -580,14 +571,38 @@ body::before {
   filter: drop-shadow(0 4px 20px rgba(0,0,0,0.5));
 }
 
-@keyframes carousel-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(calc(-50% - 5px)); }
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 4;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(201,169,110,0.35);
+  border-radius: 50%;
+  background: rgba(13, 11, 9, 0.72);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 
-@keyframes carousel-scroll-reverse {
-  from { transform: translateX(calc(-50% - 5px)); }
-  to { transform: translateX(0); }
+.carousel-arrow:hover,
+.carousel-arrow:focus-visible {
+  background: rgba(201,169,110,0.16);
+  border-color: var(--gold);
+  color: var(--gold-light);
+  outline: none;
+}
+
+.carousel-arrow-prev {
+  left: 18px;
+}
+
+.carousel-arrow-next {
+  right: 18px;
 }
 
 @media (max-width: 768px) {
@@ -595,11 +610,23 @@ body::before {
     --slide-width: min(78vw, 360px);
     --slide-height: 300px;
   }
+
+  .carousel-arrow {
+    width: 42px;
+    height: 42px;
+  }
+
+  .carousel-arrow-prev {
+    left: 8px;
+  }
+
+  .carousel-arrow-next {
+    right: 8px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gallery-carousel-track,
-  .gallery-carousel-track-reverse {
-    animation: none;
+  .gallery-carousel-track {
+    transition: none;
   }
 }
