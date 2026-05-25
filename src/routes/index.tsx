@@ -150,6 +150,8 @@ export default function Home() {
   const [scrolled, setScrolled] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const [heroSlide, setHeroSlide] = useState(0)
+  const [gallerySlide, setGallerySlide] = useState(0)
+  const [eventSlide, setEventSlide] = useState(0)
   const heroRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -164,6 +166,25 @@ export default function Home() {
     }, 3500)
     return () => clearInterval(id)
   }, [])
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setGallerySlide(s => (s + 1) % galleryCarouselImages.length)
+    }, 3000)
+    return () => clearInterval(id)
+  }, [])
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setEventSlide(s => (s + 1) % eventImages.length)
+    }, 3200)
+    return () => clearInterval(id)
+  }, [])
+
+  const prevGallerySlide = () => setGallerySlide(s => (s - 1 + galleryCarouselImages.length) % galleryCarouselImages.length)
+  const nextGallerySlide = () => setGallerySlide(s => (s + 1) % galleryCarouselImages.length)
+  const prevEventSlide = () => setEventSlide(s => (s - 1 + eventImages.length) % eventImages.length)
+  const nextEventSlide = () => setEventSlide(s => (s + 1) % eventImages.length)
 
   // Lightbox keyboard navigation
   useEffect(() => {
@@ -424,19 +445,25 @@ export default function Home() {
             </h2>
           </div>
           <div className="gallery-carousel" aria-label="Galerie foto Mercedes-Benz SL 280">
-            <div className="gallery-carousel-track">
-              {[...galleryCarouselImages, ...galleryCarouselImages].map(({ src, alt }, i) => (
+            <button type="button" className="carousel-arrow carousel-arrow-prev" onClick={prevGallerySlide} aria-label="Imaginea anterioara din galerie">
+              <ChevronLeftIcon />
+            </button>
+            <div className="gallery-carousel-track" style={{ transform: `translateX(calc(${gallerySlide} * (var(--slide-width) + 10px) * -1))` }}>
+              {galleryCarouselImages.map(({ src, alt }, i) => (
                 <button
-                  key={`${src}-${i}`}
+                  key={src}
                   type="button"
                   className="img-zoom gallery-carousel-slide"
-                  onClick={() => setLightboxIndex(i % galleryCarouselImages.length)}
-                  aria-label={`Deschide imaginea ${i % galleryCarouselImages.length + 1} din galerie`}
+                  onClick={() => setLightboxIndex(i)}
+                  aria-label={`Deschide imaginea ${i + 1} din galerie`}
                 >
                   <img src={src} alt={alt} />
                 </button>
               ))}
             </div>
+            <button type="button" className="carousel-arrow carousel-arrow-next" onClick={nextGallerySlide} aria-label="Imaginea urmatoare din galerie">
+              <ChevronRightIcon />
+            </button>
           </div>
 
           {/* Event images */}
@@ -450,19 +477,25 @@ export default function Home() {
             </h3>
           </div>
           <div className="gallery-carousel event-carousel" aria-label="Evenimente si productii Mercedes-Benz SL 280">
-            <div className="gallery-carousel-track gallery-carousel-track-reverse">
-              {[...eventImages, ...eventImages].map(({ src, alt }, i) => (
+            <button type="button" className="carousel-arrow carousel-arrow-prev" onClick={prevEventSlide} aria-label="Imaginea anterioara din Evenimente si Productii">
+              <ChevronLeftIcon />
+            </button>
+            <div className="gallery-carousel-track" style={{ transform: `translateX(calc(${eventSlide} * (var(--slide-width) + 10px) * -1))` }}>
+              {eventImages.map(({ src, alt }, i) => (
                 <button
-                  key={`${src}-${i}`}
+                  key={src}
                   type="button"
                   className="img-zoom gallery-carousel-slide"
-                  onClick={() => setLightboxIndex(galleryCarouselImages.length + (i % eventImages.length))}
-                  aria-label={`Deschide imaginea ${i % eventImages.length + 1} din Evenimente si Productii`}
+                  onClick={() => setLightboxIndex(galleryCarouselImages.length + i)}
+                  aria-label={`Deschide imaginea ${i + 1} din Evenimente si Productii`}
                 >
                   <img src={src} alt={alt} />
                 </button>
               ))}
             </div>
+            <button type="button" className="carousel-arrow carousel-arrow-next" onClick={nextEventSlide} aria-label="Imaginea urmatoare din Evenimente si Productii">
+              <ChevronRightIcon />
+            </button>
           </div>
         </div>
       </section>
