@@ -13,20 +13,6 @@ const CALENDLY_URL = 'https://calendly.com/inchirierimercedessl/30min'
 
 const heroMain = { src: '/gallery/car-14.png', alt: 'Mercedes-Benz SL 280 cu artificii la nuntă' }
 
-const heroSlideGroups = [
-  ['/gallery/car-30.png', '/gallery/event-05.png', '/gallery/car-08.png'],
-  ['/gallery/event-12.png', '/gallery/car-20.png', '/gallery/event-01.png'],
-  ['/gallery/car-09.png', '/gallery/event-08.png', '/gallery/car-25.png'],
-  ['/gallery/event-04.png', '/gallery/car-14.png', '/gallery/event-14.png'],
-  ['/gallery/car-10.png', '/gallery/event-07.png', '/gallery/car-28.png'],
-  ['/gallery/event-02.png', '/gallery/car-01.jpg', '/gallery/event-11.png'],
-  ['/gallery/car-11.png', '/gallery/event-12.png', '/gallery/car-21.png'],
-  ['/gallery/event-04.png', '/gallery/car-13.png', '/gallery/event-15.png'],
-  ['/gallery/car-15.png', '/gallery/event-06.png', '/gallery/car-22.png'],
-  ['/gallery/event-15.png', '/gallery/car-29.png', '/gallery/event-13.png'],
-  ['/gallery/car-24.png', '/gallery/car-01.png', '/gallery/event-05.png'],
-]
-
 const eventImages = [
   { src: '/gallery/event-01.png', alt: 'Mercedes-Benz SL 280 pe drum de munte' },
   { src: '/gallery/event-02.png', alt: 'Mercedes-Benz SL 280 noapte în oraș' },
@@ -149,7 +135,6 @@ function CookieBanner() {
 export default function Home() {
   const [scrolled, setScrolled] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
-  const [heroSlide, setHeroSlide] = useState(0)
   const [gallerySlide, setGallerySlide] = useState(0)
   const [eventSlide, setEventSlide] = useState(0)
   const heroRef = useRef<HTMLDivElement>(null)
@@ -162,22 +147,15 @@ export default function Home() {
 
   useEffect(() => {
     const id = setInterval(() => {
-      setHeroSlide(s => (s + 1) % heroSlideGroups.length)
-    }, 3500)
-    return () => clearInterval(id)
-  }, [])
-
-  useEffect(() => {
-    const id = setInterval(() => {
       setGallerySlide(s => (s + 1) % galleryCarouselImages.length)
-    }, 3000)
+    }, 4500)
     return () => clearInterval(id)
   }, [])
 
   useEffect(() => {
     const id = setInterval(() => {
       setEventSlide(s => (s + 1) % eventImages.length)
-    }, 3200)
+    }, 4800)
     return () => clearInterval(id)
   }, [])
 
@@ -260,34 +238,14 @@ export default function Home() {
 
       {/* ── Hero ── */}
       <section ref={heroRef} style={{ position: 'relative', height: '100svh', minHeight: '600px', overflow: 'hidden', background: 'var(--ink)' }}>
-        {/* Collage grid */}
-        <div className="hero-collage">
-          <div className="hc-main">
-            <img
-              src={heroMain.src}
-              alt={heroMain.alt}
-              fetchPriority="high"
-              loading="eager"
-              decoding="sync"
-            />
-          </div>
-          <div className="hc-slideshow">
-            {heroSlideGroups.map((group, gi) => (
-              <div
-                key={gi}
-                className={`hc-slide-group${gi === heroSlide ? ' hc-slide-active' : ''}`}
-              >
-                {group.map((src) => (
-                  <img
-                    key={src}
-                    src={src}
-                    alt="Mercedes-Benz SL 280 eveniment"
-                    loading={gi === 0 ? 'eager' : 'lazy'}
-                  />
-                ))}
-              </div>
-            ))}
-          </div>
+        <div className="hero-static">
+          <img
+            src={heroMain.src}
+            alt={heroMain.alt}
+            fetchPriority="high"
+            loading="eager"
+            decoding="sync"
+          />
         </div>
         <div
           className="hero-bg"
