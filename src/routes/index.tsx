@@ -20,10 +20,10 @@ const heroSlideGroups = [
   ['/gallery/event-04.png', '/gallery/car-14.png', '/gallery/event-14.png'],
   ['/gallery/car-10.png', '/gallery/event-07.png', '/gallery/car-28.png'],
   ['/gallery/event-02.png', '/gallery/car-01.jpg', '/gallery/event-11.png'],
-  ['/gallery/car-11.png', '/gallery/event-09.png', '/gallery/car-21.png'],
+  ['/gallery/car-11.png', '/gallery/event-12.png', '/gallery/car-21.png'],
   ['/gallery/event-04.png', '/gallery/car-13.png', '/gallery/event-15.png'],
   ['/gallery/car-15.png', '/gallery/event-06.png', '/gallery/car-22.png'],
-  ['/gallery/event-10.png', '/gallery/car-29.png', '/gallery/event-13.png'],
+  ['/gallery/event-15.png', '/gallery/car-29.png', '/gallery/event-13.png'],
   ['/gallery/car-24.png', '/gallery/car-01.png', '/gallery/event-05.png'],
 ]
 
@@ -35,8 +35,6 @@ const eventImages = [
   { src: '/gallery/event-06.png', alt: 'Mercedes-Benz SL 280 la palat' },
   { src: '/gallery/event-07.png', alt: 'Mercedes-Benz SL 280 corporate' },
   { src: '/gallery/event-08.png', alt: 'Mercedes-Benz SL 280 eveniment premium' },
-  { src: '/gallery/event-09.png', alt: 'Mercedes-Benz SL 280 nuntă decorat' },
-  { src: '/gallery/event-10.png', alt: 'Mercedes-Benz SL 280 nuntă decorat' },
   { src: '/gallery/event-11.png', alt: 'Mercedes-Benz SL 280 nunți și evenimente' },
   { src: '/gallery/event-12.png', alt: 'Mercedes-Benz SL 280 producție film' },
   { src: '/gallery/event-13.png', alt: 'Mercedes-Benz SL 280 ședință foto' },
@@ -61,9 +59,13 @@ const extraGalleryImages = [
   { src: '/gallery/car-22.png', alt: 'Mercedes-Benz SL 280 detaliu 3' },
 ]
 
-const allLightboxImages = [
+const galleryCarouselImages = [
   ...galleryImages.map(({ src, alt }) => ({ src, alt })),
   ...extraGalleryImages,
+]
+
+const allLightboxImages = [
+  ...galleryCarouselImages,
   ...eventImages,
 ]
 
@@ -421,29 +423,20 @@ export default function Home() {
               Galerie
             </h2>
           </div>
-          <div className="gallery-grid">
-            {galleryImages.map(({ src, alt, cls, scene }, i) => (
-              <div
-                key={src}
-                className={`img-zoom gallery-cell ${cls}${scene ? ' cell-scene' : ''}`}
-                onClick={() => setLightboxIndex(i)}
-              >
-                <img src={src} alt={alt} />
-              </div>
-            ))}
-          </div>
-          {/* Extra row */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', marginTop: '8px' }}>
-            {extraGalleryImages.map(({ src, alt }, i) => (
-              <div
-                key={src}
-                className="img-zoom gallery-cell"
-                style={{ height: '260px' }}
-                onClick={() => setLightboxIndex(galleryImages.length + i)}
-              >
-                <img src={src} alt={alt} />
-              </div>
-            ))}
+          <div className="gallery-carousel" aria-label="Galerie foto Mercedes-Benz SL 280">
+            <div className="gallery-carousel-track">
+              {[...galleryCarouselImages, ...galleryCarouselImages].map(({ src, alt }, i) => (
+                <button
+                  key={`${src}-${i}`}
+                  type="button"
+                  className="img-zoom gallery-carousel-slide"
+                  onClick={() => setLightboxIndex(i % galleryCarouselImages.length)}
+                  aria-label={`Deschide imaginea ${i % galleryCarouselImages.length + 1} din galerie`}
+                >
+                  <img src={src} alt={alt} />
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Event images */}
@@ -456,16 +449,20 @@ export default function Home() {
               Evenimente & Producții
             </h3>
           </div>
-          <div className="event-grid">
-            {eventImages.map(({ src, alt }, i) => (
-              <div
-                key={src}
-                className="img-zoom gallery-cell cell-scene"
-                onClick={() => setLightboxIndex(galleryImages.length + extraGalleryImages.length + i)}
-              >
-                <img src={src} alt={alt} />
-              </div>
-            ))}
+          <div className="gallery-carousel event-carousel" aria-label="Evenimente si productii Mercedes-Benz SL 280">
+            <div className="gallery-carousel-track gallery-carousel-track-reverse">
+              {[...eventImages, ...eventImages].map(({ src, alt }, i) => (
+                <button
+                  key={`${src}-${i}`}
+                  type="button"
+                  className="img-zoom gallery-carousel-slide"
+                  onClick={() => setLightboxIndex(galleryCarouselImages.length + (i % eventImages.length))}
+                  aria-label={`Deschide imaginea ${i % eventImages.length + 1} din Evenimente si Productii`}
+                >
+                  <img src={src} alt={alt} />
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
