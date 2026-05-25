@@ -523,7 +523,15 @@ body::before {
   --slide-height: clamp(260px, 38vw, 520px);
   position: relative;
   overflow: hidden;
-  padding: 4px 0;
+  padding: 24px;
+  border: 1px solid rgba(201,169,110,0.15);
+  background: rgba(13, 11, 9, 0.28);
+  transition: border-color 0.35s ease, background 0.35s ease;
+}
+
+.gallery-carousel:hover {
+  border-color: rgba(201,169,110,0.45);
+  background: rgba(201,169,110,0.04);
 }
 
 .gallery-carousel::before,
@@ -539,12 +547,12 @@ body::before {
 
 .gallery-carousel::before {
   left: 0;
-  background: linear-gradient(90deg, var(--ink) 0%, rgba(13, 11, 9, 0) 100%);
+  background: linear-gradient(90deg, rgba(13, 11, 9, 0.96) 0%, rgba(13, 11, 9, 0) 100%);
 }
 
 .gallery-carousel::after {
   right: 0;
-  background: linear-gradient(270deg, var(--ink) 0%, rgba(13, 11, 9, 0) 100%);
+  background: linear-gradient(270deg, rgba(13, 11, 9, 0.96) 0%, rgba(13, 11, 9, 0) 100%);
 }
 
 .gallery-carousel-track {
@@ -610,17 +618,18 @@ body::before {
 }
 
 .carousel-arrow-prev {
-  left: 18px;
+  left: 38px;
 }
 
 .carousel-arrow-next {
-  right: 18px;
+  right: 38px;
 }
 
 @media (max-width: 768px) {
   .gallery-carousel {
     --slide-width: min(78vw, 360px);
     --slide-height: 300px;
+    padding: 16px;
   }
 
   .carousel-arrow {
@@ -629,11 +638,11 @@ body::before {
   }
 
   .carousel-arrow-prev {
-    left: 8px;
+    left: 24px;
   }
 
   .carousel-arrow-next {
-    right: 8px;
+    right: 24px;
   }
 }
 
