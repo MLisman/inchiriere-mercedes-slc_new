@@ -519,7 +519,7 @@ body::before {
 
 /* Carousel galleries */
 .gallery-carousel {
-  --slide-height: clamp(240px, 32vw, 440px);
+  --slide-height: clamp(288px, 38.4vw, 528px);
   position: relative;
   overflow: hidden;
   padding: 24px;
@@ -626,7 +626,7 @@ body::before {
 
 @media (max-width: 768px) {
   .gallery-carousel {
-    --slide-height: 260px;
+    --slide-height: 312px;
     padding: 16px;
   }
 
