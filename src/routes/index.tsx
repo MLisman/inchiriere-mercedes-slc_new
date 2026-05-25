@@ -406,7 +406,7 @@ export default function Home() {
             <button type="button" className="carousel-arrow carousel-arrow-prev" onClick={prevGallerySlide} aria-label="Imaginea anterioara din galerie">
               <ChevronLeftIcon />
             </button>
-            <div className="gallery-carousel-track" style={{ transform: `translateX(calc(${gallerySlide} * (var(--slide-width) + 10px) * -1))` }}>
+            <div className="gallery-carousel-track" style={{ transform: `translateX(calc(${gallerySlide} * -100%))` }}>
               {galleryCarouselImages.map(({ src, alt }, i) => (
                 <button
                   key={src}
@@ -438,7 +438,7 @@ export default function Home() {
             <button type="button" className="carousel-arrow carousel-arrow-prev" onClick={prevEventSlide} aria-label="Imaginea anterioara din Evenimente si Productii">
               <ChevronLeftIcon />
             </button>
-            <div className="gallery-carousel-track" style={{ transform: `translateX(calc(${eventSlide} * (var(--slide-width) + 10px) * -1))` }}>
+            <div className="gallery-carousel-track" style={{ transform: `translateX(calc(${eventSlide} * -100%))` }}>
               {eventImages.map(({ src, alt }, i) => (
                 <button
                   key={src}
