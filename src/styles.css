@@ -539,15 +539,15 @@ body::before {
   display: flex;
   gap: 10px;
   width: max-content;
-  animation: carousel-scroll 42s linear infinite;
+  animation: carousel-scroll 24s linear infinite;
+  will-change: transform;
 }
 
 .gallery-carousel-track-reverse {
   animation-name: carousel-scroll-reverse;
-  animation-duration: 48s;
+  animation-duration: 28s;
 }
 
-.gallery-carousel:hover .gallery-carousel-track,
 .gallery-carousel:focus-within .gallery-carousel-track {
   animation-play-state: paused;
 }
