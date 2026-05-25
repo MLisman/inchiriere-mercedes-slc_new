@@ -19,6 +19,10 @@ const tagCalendlyBadge = () => {
   badge.dataset.trackingLocation = 'floating_badge'
 }
 
+const isCalendlyEvent = (event: MessageEvent) => {
+  return event.origin === 'https://calendly.com' && event.data?.event?.startsWith('calendly.')
+}
+
 const heroMain = { src: '/gallery/car-14.png', alt: 'Mercedes-Benz SL 280 cu artificii la nuntă' }
 
 const eventImages = [
@@ -151,6 +155,23 @@ export default function Home() {
     const onScroll = () => setScrolled(window.scrollY > 60)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    const onCalendlyMessage = (event: MessageEvent) => {
+      if (!isCalendlyEvent(event) || event.data.event !== 'calendly.event_scheduled') return
+
+      const w = window as any
+      w.dataLayer = w.dataLayer || []
+      w.dataLayer.push({
+        event: 'event_booked',
+        calendlyEvent: event.data.event,
+        calendlyPayload: event.data.payload,
+      })
+    }
+
+    window.addEventListener('message', onCalendlyMessage)
+    return () => window.removeEventListener('message', onCalendlyMessage)
   }, [])
 
   useEffect(() => {
