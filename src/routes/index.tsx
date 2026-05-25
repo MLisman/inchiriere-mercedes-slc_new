@@ -11,6 +11,14 @@ const WHATSAPP_HREF = 'https://wa.me/40750449650'
 const EMAIL = 'inchirierimercedessl@gmail.com'
 const CALENDLY_URL = 'https://calendly.com/inchirierimercedessl/30min'
 
+const tagCalendlyBadge = () => {
+  const badge = document.querySelector<HTMLElement>('.calendly-badge-widget')
+  if (!badge) return
+  badge.id = 'cta-calendly-badge'
+  badge.dataset.trackingId = 'cta-calendly-badge'
+  badge.dataset.trackingLocation = 'floating_badge'
+}
+
 const heroMain = { src: '/gallery/car-14.png', alt: 'Mercedes-Benz SL 280 cu artificii la nuntă' }
 
 const eventImages = [
@@ -201,10 +209,14 @@ export default function Home() {
         textColor: '#0d0b09',
         branding: true,
       })
+      setTimeout(tagCalendlyBadge, 500)
     }
     document.body.appendChild(script)
+    const badgeObserver = new MutationObserver(tagCalendlyBadge)
+    badgeObserver.observe(document.body, { childList: true, subtree: true })
 
     return () => {
+      badgeObserver.disconnect()
       if (document.head.contains(link)) document.head.removeChild(link)
       if (document.body.contains(script)) document.body.removeChild(script)
     }
@@ -326,7 +338,14 @@ export default function Home() {
           </p>
 
           <div className="reveal delay-5 flex flex-wrap gap-4">
-            <button onClick={openCalendly} className="btn-gold" type="button">
+            <button
+              id="cta-reserve-hero"
+              data-tracking-id="cta-reserve-hero"
+              data-tracking-location="hero"
+              onClick={openCalendly}
+              className="btn-gold"
+              type="button"
+            >
               <CalendarIcon />
               Rezervă Acum
             </button>
@@ -403,7 +422,16 @@ export default function Home() {
             </h2>
           </div>
           <div className="gallery-carousel" aria-label="Galerie foto Mercedes-Benz SL 280">
-            <button type="button" className="carousel-arrow carousel-arrow-prev" onClick={prevGallerySlide} aria-label="Imaginea anterioara din galerie">
+            <button
+              id="carousel-gallery-prev"
+              data-tracking-id="carousel-gallery-prev"
+              data-carousel="gallery"
+              data-carousel-direction="prev"
+              type="button"
+              className="carousel-arrow carousel-arrow-prev"
+              onClick={prevGallerySlide}
+              aria-label="Imaginea anterioara din galerie"
+            >
               <ChevronLeftIcon />
             </button>
             <div className="gallery-carousel-track" style={{ transform: `translateX(calc(${gallerySlide} * -100%))` }}>
@@ -419,7 +447,16 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            <button type="button" className="carousel-arrow carousel-arrow-next" onClick={nextGallerySlide} aria-label="Imaginea urmatoare din galerie">
+            <button
+              id="carousel-gallery-next"
+              data-tracking-id="carousel-gallery-next"
+              data-carousel="gallery"
+              data-carousel-direction="next"
+              type="button"
+              className="carousel-arrow carousel-arrow-next"
+              onClick={nextGallerySlide}
+              aria-label="Imaginea urmatoare din galerie"
+            >
               <ChevronRightIcon />
             </button>
           </div>
@@ -435,7 +472,16 @@ export default function Home() {
             </h3>
           </div>
           <div className="gallery-carousel event-carousel" aria-label="Evenimente si productii Mercedes-Benz SL 280">
-            <button type="button" className="carousel-arrow carousel-arrow-prev" onClick={prevEventSlide} aria-label="Imaginea anterioara din Evenimente si Productii">
+            <button
+              id="carousel-events-prev"
+              data-tracking-id="carousel-events-prev"
+              data-carousel="events"
+              data-carousel-direction="prev"
+              type="button"
+              className="carousel-arrow carousel-arrow-prev"
+              onClick={prevEventSlide}
+              aria-label="Imaginea anterioara din Evenimente si Productii"
+            >
               <ChevronLeftIcon />
             </button>
             <div className="gallery-carousel-track" style={{ transform: `translateX(calc(${eventSlide} * -100%))` }}>
@@ -451,7 +497,16 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            <button type="button" className="carousel-arrow carousel-arrow-next" onClick={nextEventSlide} aria-label="Imaginea urmatoare din Evenimente si Productii">
+            <button
+              id="carousel-events-next"
+              data-tracking-id="carousel-events-next"
+              data-carousel="events"
+              data-carousel-direction="next"
+              type="button"
+              className="carousel-arrow carousel-arrow-next"
+              onClick={nextEventSlide}
+              aria-label="Imaginea urmatoare din Evenimente si Productii"
+            >
               <ChevronRightIcon />
             </button>
           </div>
@@ -559,6 +614,9 @@ export default function Home() {
             ))}
             <div style={{ marginTop: '40px' }}>
               <button
+                id="cta-reserve-pricing"
+                data-tracking-id="cta-reserve-pricing"
+                data-tracking-location="pricing"
                 onClick={openCalendly}
                 className="btn-gold"
                 style={{ width: '100%', justifyContent: 'center' }}
