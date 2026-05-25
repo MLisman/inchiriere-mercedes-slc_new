@@ -105,21 +105,51 @@ const pricing = [
   { label: 'Km extra', value: '6 lei / km' },
 ]
 
+type ConsentChoice = 'accepted' | 'declined'
+
+const updateConsentMode = (choice: ConsentChoice) => {
+  const granted = choice === 'accepted'
+  const w = window as any
+
+  w.dataLayer = w.dataLayer || []
+  w.gtag = w.gtag || function gtag(){ w.dataLayer.push(arguments) }
+  w.gtag('consent', 'update', {
+    ad_storage: granted ? 'granted' : 'denied',
+    ad_user_data: granted ? 'granted' : 'denied',
+    ad_personalization: granted ? 'granted' : 'denied',
+    analytics_storage: granted ? 'granted' : 'denied',
+    functionality_storage: 'granted',
+    security_storage: 'granted',
+  })
+  w.dataLayer.push({
+    event: 'cookie_consent_update',
+    consent_status: choice,
+    analytics_storage: granted ? 'granted' : 'denied',
+    ad_storage: granted ? 'granted' : 'denied',
+  })
+}
+
 function CookieBanner() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     const consent = localStorage.getItem('cookie-consent')
-    if (!consent) setVisible(true)
+    if (consent === 'accepted' || consent === 'declined') {
+      updateConsentMode(consent)
+      return
+    }
+    setVisible(true)
   }, [])
 
   const accept = () => {
     localStorage.setItem('cookie-consent', 'accepted')
+    updateConsentMode('accepted')
     setVisible(false)
   }
 
   const decline = () => {
     localStorage.setItem('cookie-consent', 'declined')
+    updateConsentMode('declined')
     setVisible(false)
   }
 
@@ -136,8 +166,22 @@ function CookieBanner() {
           </a>.
         </p>
         <div className="cookie-banner-actions">
-          <button onClick={accept} className="btn-gold cookie-btn">Accept</button>
-          <button onClick={decline} className="cookie-btn cookie-btn-decline">Refuz</button>
+          <button
+            id="cookie-consent-accept"
+            data-tracking-id="cookie-consent-accept"
+            onClick={accept}
+            className="btn-gold cookie-btn"
+          >
+            Accept
+          </button>
+          <button
+            id="cookie-consent-decline"
+            data-tracking-id="cookie-consent-decline"
+            onClick={decline}
+            className="cookie-btn cookie-btn-decline"
+          >
+            Refuz
+          </button>
         </div>
       </div>
     </div>
